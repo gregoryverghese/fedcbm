@@ -1,0 +1,90 @@
+# MINOTAUR Configuration: Binary Concepts
+# Based on arg_def.py defaults
+
+task_type: "binary"
+experiment_name: "bin_model_v2"
+description: "CEM-MIL with binary concepts"
+random_seed: 42
+
+data:
+  db_path: "${DB_PATH}"  # Use environment variable or full path
+  database: "lmdb"
+  target: "Survival"
+  bag_n: 3000
+  k: 0
+  test_size: 0.2
+  stratify_random_state: 42
+  k_fold: 8
+  k_fold_random_state: 1
+
+concepts:
+  cpt_ids:
+    - "stage_var_0"
+    - "stage_var_1"
+    - "stage_var_2"
+    - "stage_var_3"
+    - "age_group_2"
+    - "age_group_1"
+    - "age_group_0"
+    - "project_id_0"
+    - "project_id_1"
+    - "project_id_2"
+    - "project_id_3"
+    - "project_id_4"
+    - "project_id_5"
+    - "project_id_6"
+    - "project_id_7"
+    - "project_id_8"
+    - "project_id_9"
+    - "RNA_Bio_ter_low"
+    - "RNA_Bio_ter_mid"
+    - "RNA_Bio_ter_high"
+  n_concepts: 20
+  concept_states: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  # All binary
+  cpt_cls_weights: null
+  no_concepts: false
+
+model:
+  n_tasks: 1
+  h_dim: 1024
+  emb_dim: 8
+  emb_activ: "LeakyReLU"
+  pre: true
+  pre_bn_mlp: true
+  attn: true
+  n_attn_heads: 4
+  attn_dim: 256
+  attn_dropout: 0.3
+  dropout: true
+  c_weight: 1.0
+  task_loss_weight: 1.0
+  shared_prob_gen: false
+  c2y_model: null
+  c2y_layers: null
+  top_k_accuracy: null
+
+training:
+  optimizer: "adam"
+  learning_rate: 0.001
+  momentum: 0.9
+  weight_decay: 0.00004
+  max_epochs: 7
+  check_val_every_n_epoch: 7
+  batch_size: 64
+  val_batch_size: 4
+  num_workers: null
+  drop_last: true
+
+output:
+  save_path: null
+  log_path: null
+  name: "bin_model_v2"
+  categorical: true
+
+hardware:
+  accelerator: "gpu"
+  devices: "auto"
+  enable_progress_bar: true
+  cuda_launch_blocking: false
+
+

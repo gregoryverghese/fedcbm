@@ -1,0 +1,153 @@
+# MINOTAUR CEM-MIL Configuration Template
+# This file captures all parameters and hyperparameters used in training
+# Generated from analysis of tuning.py, main.py, cem_mil_rf.py, and arg_def_cat.py
+
+# =============================================================================
+# EXPERIMENT METADATA
+# =============================================================================
+experiment:
+  name: "cat_model_exv28"  # From arg_def_cat.py
+  version: "1.0"
+  description: "CEM-MIL with categorical concepts"
+  timestamp: null  # Will be set at runtime
+  random_seed: 42  # From main.py stratify_random_state
+
+# =============================================================================
+# DATA CONFIGURATION
+# =============================================================================
+data:
+  # Database and paths
+  db_path: "/SAN/colcc/Hormad1/data/embeddings"  # From arg_def_cat.py
+  database: "lmdb"  # From arg_def_cat.py
+  target: "Survival"  # From arg_def_cat.py
+  
+  # Multiple Instance Learning parameters
+  bag_n: 3000  # From tuning.py (OVERRIDES arg_def_cat default)
+  k: 0  # From arg_def_cat.py
+  
+  # Data splitting
+  test_size: 0.2  # From main.py
+  stratify_random_state: 42  # From main.py
+  k_fold: 8  # From tuning.py
+  k_fold_random_state: 1  # From tuning.py
+
+# =============================================================================
+# CONCEPT CONFIGURATION
+# =============================================================================
+concepts:
+  # Concept definitions
+  cpt_ids: ["Stage", "Age", "Cancer", "RNA_Bio_ter"]  # From arg_def_cat.py
+  n_concepts: 4  # From arg_def_cat.py
+  concept_states: [4, 3, 10, 3]  # From arg_def_cat.py
+  # Note: [4, 3, 10, 0] means:
+  # - Stage: 4 classes (categorical)
+  # - Age: 3 classes (categorical) 
+  # - Cancer: 10 classes (categorical)
+  # - RNA_Bio_z: continuous (0)
+  
+  # Concept weights (OVERRIDDEN by tuning.py)
+  cpt_cls_weights: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]  # 17 weights from tuning.py
+  # Note: 17 weights = 4 for Stage + 3 for Age + 10 for Cancer + 0 for RNA_Bio (continuous)
+
+# =============================================================================
+# MODEL ARCHITECTURE
+# =============================================================================
+model:
+  # Core architecture
+  n_tasks: 1  # From arg_def_cat.py
+  h_dim: 1024  # From arg_def_cat.py
+  emb_dim: 8  # From tuning.py (OVERRIDES arg_def_cat default)
+  emb_activ: "LeakyReLU"  # From arg_def_cat.py
+  
+  # Pre-processing
+  pre: true  # From tuning.py (OVERRIDES arg_def_cat default)
+  pre_bn_mlp: true  # From arg_def_cat.py
+  
+  # Attention mechanism
+  attn: true  # From tuning.py (OVERRIDES arg_def_cat default)
+  n_attn_heads: 4  # From arg_def_cat.py
+  attn_dim: 256  # From arg_def_cat.py
+  attn_dropout: 0.3  # From tuning.py (OVERRIDES arg_def_cat default)
+  
+  # Regularization
+  dropout: 0.3  # From tuning.py (OVERRIDES arg_def_cat default: True)
+  
+  # Loss weights
+  concept_loss_weight: 1  # From tuning.py (OVERRIDES arg_def_cat default)
+  task_loss_weight: 1  # From cem_mil_rf.py default
+  
+  # Additional model parameters
+  shared_prob_gen: false  # From cem_mil_rf.py default
+  c2y_model: null  # From cem_mil_rf.py default
+  c2y_layers: null  # From cem_mil_rf.py default
+  top_k_accuracy: null  # From cem_mil_rf.py default
+
+# =============================================================================
+# TRAINING CONFIGURATION
+# =============================================================================
+training:
+  # Optimizer settings (OVERRIDDEN by main.py)
+  optimizer: "adam"  # From main.py (OVERRIDES cem_mil_rf.py default)
+  learning_rate: 0.001  # From main.py (OVERRIDES cem_mil_rf.py default: 0.01)
+  momentum: 0.9  # From cem_mil_rf.py default
+  weight_decay: 0.00004  # From cem_mil_rf.py default
+  
+  # Training loop
+  max_epochs: 7  # From main.py
+  check_val_every_n_epoch: 7  # From main.py
+  
+  # Batch configuration
+  batch_size: 64  # From tuning.py (OVERRIDES arg_def_cat default)
+  val_batch_size: 4  # From main.py (hardcoded)
+  
+  # Data loading
+  num_workers: null  # Will be set to int(os.cpu_count()/6) at runtime
+  drop_last: true  # From main.py
+  
+  # Hyperparameter search (from tuning.py)
+  hyperparameter_search:
+    n_bags: [3000]  # From tuning.py
+    batches: [64]  # From tuning.py
+    cpt_weights: [0.01, 0.1, 1, 10]  # From tuning.py
+    emb_sizes: [8]  # From tuning.py
+    dropouts: [0.3]  # From tuning.py
+    attns: [true]  # From tuning.py
+    n_repeats: 5  # From tuning.py
+
+# =============================================================================
+# OUTPUT CONFIGURATION
+# =============================================================================
+output:
+  save_path: null  # Will be set at runtime
+  log_path: null  # Will be set to save_path/logs at runtime
+  categorical: true  # From arg_def_cat.py
+
+# =============================================================================
+# HARDWARE CONFIGURATION
+# =============================================================================
+hardware:
+  accelerator: "gpu"  # From main.py
+  devices: "auto"  # From main.py
+  enable_progress_bar: true  # From main.py
+
+# =============================================================================
+# PARAMETER OVERRIDE SUMMARY
+# =============================================================================
+# The following parameters are overridden in the current implementation:
+# 
+# 1. bag_n: 3000 (tuning.py overrides arg_def_cat.py)
+# 2. cpt_cls_weights: 17*[1.0] (tuning.py overrides arg_def_cat.py: None)
+# 3. batch_size: 64 (tuning.py overrides arg_def_cat.py)
+# 4. c_weight: [0.01,0.1,1,10] (tuning.py overrides arg_def_cat.py: 1)
+# 5. emb_dim: 8 (tuning.py overrides arg_def_cat.py)
+# 6. dropout: 0.3 (tuning.py overrides arg_def_cat.py: True)
+# 7. attn: True (tuning.py overrides arg_def_cat.py)
+# 8. pre: True (tuning.py overrides arg_def_cat.py)
+# 9. learning_rate: 0.001 (main.py overrides cem_mil_rf.py: 0.01)
+# 10. optimizer: "adam" (main.py overrides cem_mil_rf.py default)
+# 11. attn_dropout: 0.3 (tuning.py overrides arg_def_cat.py)
+#
+# Note: The predict_attention_batch.py script currently hardcodes:
+# - n_attn_heads: 4
+# - concept_states: [4, 3, 10, 2] (DIFFERENT from arg_def_cat.py: [4,3,10,0])
+# This discrepancy should be resolved by using this config file.
