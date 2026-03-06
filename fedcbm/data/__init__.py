@@ -1,4 +1,4 @@
-"""Data handling for MINOTAUR."""
+"""Data handling for fedcbm."""
 from .datasets import TileDataset, MultinominalSampler
 from .loaders import get_data_loaders, validate_batch_size
 from .io import get_io_backend, LMDBRead, LMDBWrite, DiskRead, DiskWrite
