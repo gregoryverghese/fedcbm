@@ -69,7 +69,7 @@ def get_data_loaders(
         for p in db_paths
         for db in list(train_data['ID'])
         if db == os.path.basename(p)[:-4]
-    ][:100]  # Limit to 100 (can be removed)
+    ]
     
     train_weights = [1.0 for _ in range(len(train_dbs))]
     mn_sampler = MultinominalSampler(
