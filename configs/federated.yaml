@@ -1,0 +1,78 @@
+# Federated CBM configuration
+# Shared by all FL experiments; override partition_type and paths via CLI
+
+task_type: "cox"
+experiment_name: "fedcbm_experiment"
+description: "Federated Concept Bottleneck Model for pan-cancer survival"
+random_seed: 42
+
+data:
+  db_path: "/home/maracuja/data/tcga/embeddings/uni"
+  database: "lmdb"
+  target: "Survival"
+  bag_n: 3000
+  k: 0
+  test_size: 0.2
+  stratify_random_state: 42
+  k_fold: 5
+  k_fold_random_state: 1
+
+concepts:
+  cpt_ids: ["Stage", "Age", "Cancer", "RNA_Bio_ter"]
+  n_concepts: 4
+  concept_states: [4, 3, 10, 3]
+  cpt_cls_weights: null
+  no_concepts: false
+
+model:
+  n_tasks: 1
+  h_dim: 1024
+  emb_dim: 8
+  emb_activ: "LeakyReLU"
+  pre: true
+  pre_bn_mlp: true
+  attn: true
+  n_attn_heads: 4
+  attn_dim: 256
+  attn_dropout: 0.3
+  dropout: 0.3
+  c_weight: 1.0
+  task_loss_weight: 1.0
+
+training:
+  optimizer: "adam"
+  learning_rate: 0.001
+  momentum: 0.9
+  weight_decay: 0.00004
+  max_epochs: 5            # local epochs per FL round (used in centralised too)
+  check_val_every_n_epoch: 5
+  batch_size: 32
+  val_batch_size: 4
+  num_workers: 4
+  drop_last: true
+
+output:
+  save_path: "results"
+  log_path: null
+  name: "fedcbm"
+  categorical: true
+
+hardware:
+  accelerator: "gpu"
+  devices: "auto"
+  enable_progress_bar: false
+  cuda_launch_blocking: false
+
+# Federated-specific settings (read by federation scripts)
+federated:
+  n_rounds: 20
+  n_clients: 6
+  fraction_fit: 1.0
+  fraction_evaluate: 1.0
+  local_epochs: 3
+  strategy: "fedavg"
+  client_num_cpus: 2
+  client_num_gpus: 0.5
+  partition_type: "iid"          # override to "noniid" for non-IID experiment
+  partition_dir: "data/partitions"
+  global_test_path: "data/partitions/global_test.csv"
