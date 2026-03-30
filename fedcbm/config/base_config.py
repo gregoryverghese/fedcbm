@@ -129,3 +129,20 @@ class Config:
             self.experiment_name = self.output.name
 
 
+
+
+@dataclass
+class FederatedConfig:
+    """Federated learning configuration."""
+    n_rounds: int = 20               # FL communication rounds
+    n_clients: int = 6               # Number of federated clients
+    fraction_fit: float = 1.0        # Fraction of clients selected per round
+    fraction_evaluate: float = 1.0   # Fraction used for client-side eval
+    local_epochs: int = 5            # Local training epochs per round
+    strategy: str = "fedavg"         # Aggregation strategy (currently only fedavg)
+    # Resources allocated per simulated client
+    client_num_cpus: int = 2
+    client_num_gpus: float = 0.0     # Set >0 if GPUs available and desired
+    partition_type: str = "iid"      # "iid" or "noniid"
+    partition_dir: str = "data/partitions"
+    global_test_path: str = "data/partitions/global_test.csv"
