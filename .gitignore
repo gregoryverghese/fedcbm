@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.eggs/
+dist/
+build/
+
+# Virtual envs
+.venv/
+env/
+venv/
+
+# Experiment outputs
+results/
+
+# Data (large files / generated outputs — partitions are committed intentionally)
+data/*.lmdb
+data/*.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# Misc
+*.log
+.DS_Store
