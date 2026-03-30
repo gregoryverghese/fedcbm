@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 from scipy.ndimage import gaussian_filter
-from minotaur.wsi.utilities import TissueDetect
+from fedcbm.wsi.utilities import TissueDetect
 from geojson_heatmaps import GeoJson
 
 

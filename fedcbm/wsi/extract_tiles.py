@@ -16,8 +16,8 @@ from pathlib import Path
 # Add the current directory to the path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from minotaur.wsi.parser import WSIParser
-from minotaur.wsi.utilities import TissueDetect
+from fedcbm.wsi.parser import WSIParser
+from fedcbm.wsi.utilities import TissueDetect
 
 
 def parse_coordinates(coord_string):

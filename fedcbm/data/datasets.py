@@ -9,7 +9,7 @@ import pandas as pd
 from typing import List, Tuple, Union, Optional
 
 # TODO: Update import after removing old cem_mil package
-from minotaur.data.io.lmdb import LMDBRead
+from fedcbm.data.io.lmdb import LMDBRead
 
 
 class TileDataset(Dataset):
@@ -48,7 +48,7 @@ class TileDataset(Dataset):
             for p in self.db_paths
             for db in list(dataset['ID'])
             if db == os.path.basename(p)[:-4]
-        ][:100]
+        ]
         
         self.tgt = target
         self.cpt_ids = cpt_ids

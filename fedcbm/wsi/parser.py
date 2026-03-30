@@ -15,10 +15,10 @@ from itertools import chain
 import operator as op
 
 # Updated imports for new structure
-from minotaur.data.io.lmdb import LMDBWrite
-from minotaur.data.io.disk import DiskWrite
-from minotaur.wsi.features import FeatureGenerator
-from minotaur.wsi.exceptions import StitchingMissingPatches
+from fedcbm.data.io.lmdb import LMDBWrite
+from fedcbm.data.io.disk import DiskWrite
+from fedcbm.wsi.features import FeatureGenerator
+from fedcbm.wsi.exceptions import StitchingMissingPatches
 #from pyslide.io.tfrecords_io import TFRecordWrite
 
 

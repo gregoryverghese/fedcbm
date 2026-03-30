@@ -18,10 +18,10 @@ warnings.filterwarnings("ignore")
 #if not os.getenv("CUDA_LAUNCH_BLOCKING"):
 #os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
 
-from minotaur.config import load_config_from_yaml
-from minotaur.training import train
-from minotaur.training.metrics import compute_task_metrics_all, compute_concept_metrics
-from minotaur.training.utils import (
+from fedcbm.config import load_config_from_yaml
+from fedcbm.training import train
+from fedcbm.training.metrics import compute_task_metrics_all, compute_concept_metrics
+from fedcbm.training.utils import (
     get_sweep_id, 
     build_trial_name, 
     collect_hyperparameters,

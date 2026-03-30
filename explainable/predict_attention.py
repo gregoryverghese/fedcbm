@@ -9,12 +9,12 @@ from torch.utils.data import DataLoader
 import glob
 
 # Updated imports for new package structure
-from minotaur.models import ConceptEmbeddingModel
-from minotaur.training.utils import get_cptprobs, get_yprobs, get_cembs, get_contexts
-from minotaur.data.io.lmdb import LMDBRead
+from fedcbm.models import ConceptEmbeddingModel
+from fedcbm.training.utils import get_cptprobs, get_yprobs, get_cembs, get_contexts
+from fedcbm.data.io.lmdb import LMDBRead
 
 # Fix for pickle module import issue (for compatibility with pickled LMDB files)
-import minotaur.data.io.lmdb as lmdb_io
+import fedcbm.data.io.lmdb as lmdb_io
 import sys
 sys.modules['lmdb_io'] = lmdb_io
 

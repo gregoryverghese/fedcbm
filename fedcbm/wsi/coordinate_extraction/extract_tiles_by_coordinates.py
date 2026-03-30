@@ -18,7 +18,7 @@ from pathlib import Path
 # Add the current directory to the path to import from tiler module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from minotaur.wsi.coordinate_extraction.coordinate_tile_extractor import CoordinateTileExtractor
+from fedcbm.wsi.coordinate_extraction.coordinate_tile_extractor import CoordinateTileExtractor
 
 
 def parse_coordinates(coord_string):

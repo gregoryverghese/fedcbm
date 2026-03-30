@@ -16,8 +16,8 @@ from openslide import OpenSlide
 # Add the parent directory to the path to import from tiler module
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from minotaur.wsi.parser import WSIParser
-from minotaur.wsi.utilities import TissueDetect, StainNormalizer
+from fedcbm.wsi.parser import WSIParser
+from fedcbm.wsi.utilities import TissueDetect, StainNormalizer
 
 
 class CoordinateTileExtractor:

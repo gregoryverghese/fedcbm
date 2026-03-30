@@ -9,10 +9,10 @@ from torch.utils.data import DataLoader
 from pytorch_lightning.loggers import TensorBoardLogger
 
 # TODO: Update imports after removing old cem_mil package
-from minotaur.models import ConceptEmbeddingModel
-from minotaur.data import get_data_loaders
-from minotaur.training.callbacks import AttentionHook, SaveAttentionCallback
-from minotaur.training.utils import (
+from fedcbm.models import ConceptEmbeddingModel
+from fedcbm.data import get_data_loaders
+from fedcbm.training.callbacks import AttentionHook, SaveAttentionCallback
+from fedcbm.training.utils import (
     get_concept_weights,
     get_cptprobs,
     get_yprobs,
@@ -21,7 +21,7 @@ from minotaur.training.utils import (
     get_concept_attention_weights,
     build_predictions_dataframe,
 )
-from minotaur.training.metrics import (
+from fedcbm.training.metrics import (
     compute_task_metrics_all,
     compute_concept_metrics,
 )

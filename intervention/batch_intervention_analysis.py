@@ -113,7 +113,7 @@ def create_shared_dataloader(
         )
     else:
         # Use traditional random sampling approach
-        from minotaur.data import TileDataset
+        from fedcbm.data import TileDataset
         dataset = TileDataset(
             dataset=test_data_subset,
             db_path=db_path,

@@ -13,7 +13,7 @@ import time
 
 # Updated imports - no need for sys.path.append with proper package structure
 # Fix for pickle module import issue (for compatibility with pickled LMDB files)
-import minotaur.data.io.lmdb as lmdb_io
+import fedcbm.data.io.lmdb as lmdb_io
 import sys
 sys.modules['lmdb_io'] = lmdb_io
 

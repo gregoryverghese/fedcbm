@@ -6,7 +6,7 @@ import torch.nn.functional as F
 import sklearn.metrics
 
 # Import metric computation functions
-from minotaur.training.metrics import compute_concept_metric_single, compute_task_metric_single
+from fedcbm.training.metrics import compute_concept_metric_single, compute_task_metric_single
 
 # Import losses and attention mechanisms from separate modules
 from .losses import CoxLoss

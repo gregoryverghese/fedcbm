@@ -8,8 +8,8 @@ import sys
 import os
 
 # Updated imports for new package structure
-from minotaur.models import ConceptEmbeddingModel
-from minotaur.training import AttentionHook, SaveAttentionCallback
+from fedcbm.models import ConceptEmbeddingModel
+from fedcbm.training import AttentionHook, SaveAttentionCallback
 
 # For backward compatibility with old Args classes
 try:

@@ -10,8 +10,8 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 
-from minotaur.wsi.parser import WSIParser
-from minotaur.wsi.utilities import TissueDetect, visualise_wsi_tiling, StainNormalizer
+from fedcbm.wsi.parser import WSIParser
+from fedcbm.wsi.utilities import TissueDetect, visualise_wsi_tiling, StainNormalizer
 
 
 def parse_wsi(args, wsi_path):

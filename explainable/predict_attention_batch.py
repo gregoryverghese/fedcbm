@@ -11,14 +11,14 @@ from tqdm import tqdm
 import yaml
 
 # Updated imports for new package structure
-from minotaur.config import load_config_from_yaml, create_config_from_args
-from minotaur.models import ConceptEmbeddingModel
-from minotaur.training.utils import get_cptprobs, get_yprobs, get_cembs, get_contexts
-from minotaur.training.metrics import get_cat_concept_metrics
-from minotaur.data.io.lmdb import LMDBRead
+from fedcbm.config import load_config_from_yaml, create_config_from_args
+from fedcbm.models import ConceptEmbeddingModel
+from fedcbm.training.utils import get_cptprobs, get_yprobs, get_cembs, get_contexts
+from fedcbm.training.metrics import get_cat_concept_metrics
+from fedcbm.data.io.lmdb import LMDBRead
 
 # Fix for pickle module import issue (for compatibility with pickled LMDB files)
-import minotaur.data.io.lmdb as lmdb_io
+import fedcbm.data.io.lmdb as lmdb_io
 import sys
 sys.modules['lmdb_io'] = lmdb_io
 
@@ -237,7 +237,7 @@ def load_trained_model(checkpoint_path, config):
     for cpt in config.cpt_ids:
         dummy_data[cpt] = [0]
 
-    from minotaur.training import AttentionHook
+    from fedcbm.training import AttentionHook
 
     if config.attn:
         attention_hook = AttentionHook()

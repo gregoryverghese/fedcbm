@@ -10,7 +10,7 @@ from typing import Dict, Any, Optional
 
 # Import AttentionHook for model creation
 try:
-    from minotaur.training import AttentionHook
+    from fedcbm.training import AttentionHook
 except ImportError:
     # Fallback for backward compatibility
     try:
