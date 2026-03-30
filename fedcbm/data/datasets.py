@@ -41,7 +41,8 @@ class TileDataset(Dataset):
         self.dataset = dataset
         self.db_path = db_path
         self.db_paths = glob.glob(os.path.join(db_path, 'features', '*'))
-        
+        self._use_npy = any(p.endswith('.npy') for p in self.db_paths)
+
         # Filter database paths to match dataset IDs
         self.ws_dbs = [
             p
@@ -108,28 +109,30 @@ class TileDataset(Dataset):
         bags = []
         for i, db_pth in enumerate(self.ws_dbs):
             ws_id = os.path.basename(db_pth)[:-4]
-            self._init_db(db_pth)
-            keys = self.lmdb_read.get_keys()
-            
-            if len(keys) == 0:
-                continue
-            
-            random.shuffle(keys)
-            num_bags = 1
-            
-            for j in range(num_bags):
-                n = self.bag_num if len(keys) > self.bag_num else len(keys)
+
+            if self._use_npy:
+                n_tiles = np.load(db_pth, mmap_mode='r').shape[0]
+                if n_tiles == 0:
+                    continue
+                indices = self._sample_tiles(range(n_tiles))
+                bag = indices.numpy()
+            else:
+                self._init_db(db_pth)
+                keys = self.lmdb_read.get_keys()
+                if len(keys) == 0:
+                    continue
+                random.shuffle(keys)
                 indices = self._sample_tiles(keys)
                 bag = np.array(keys)[indices.numpy()]
 
-                if self.task_type == 'cox':
-                    event, survtime = self._get_survival(ws_id)
-                    cpts = self._get_concepts(ws_id)
-                    bags.append((db_pth, bag, (event, survtime), cpts))
-                else:
-                    target = self._get_target(ws_id)
-                    cpts = self._get_concepts(ws_id)
-                    bags.append((db_pth, bag, target, cpts))
+            if self.task_type == 'cox':
+                event, survtime = self._get_survival(ws_id)
+                cpts = self._get_concepts(ws_id)
+                bags.append((db_pth, bag, (event, survtime), cpts))
+            else:
+                target = self._get_target(ws_id)
+                cpts = self._get_concepts(ws_id)
+                bags.append((db_pth, bag, target, cpts))
         
         return bags
 
@@ -138,18 +141,22 @@ class TileDataset(Dataset):
         self.lmdb_read = LMDBRead(db)
 
     def _buildbag(self, id_: str, bag: np.ndarray) -> torch.Tensor:
-        """Build a bag tensor from tile keys."""
-        self._init_db(id_)
-        bag_mat = []
-        for k in bag:
-            ndarray = self.lmdb_read.read_ndarray(k)
-            feature_vec = ndarray.get_ndarray()
-            feature_vec = torch.Tensor(np.array(feature_vec))
-            feature_vec = torch.squeeze(feature_vec, 0)
-            bag_mat.append(feature_vec)
-        bag_mat = torch.stack(bag_mat, 0)
-        bag_mat = torch.squeeze(bag_mat)
-        return bag_mat
+        """Build a bag tensor from tile indices or keys."""
+        if self._use_npy:
+            arr = np.load(id_)
+            return torch.from_numpy(arr[bag]).float()
+        else:
+            self._init_db(id_)
+            bag_mat = []
+            for k in bag:
+                ndarray = self.lmdb_read.read_ndarray(k)
+                feature_vec = ndarray.get_ndarray()
+                feature_vec = torch.Tensor(np.array(feature_vec))
+                feature_vec = torch.squeeze(feature_vec, 0)
+                bag_mat.append(feature_vec)
+            bag_mat = torch.stack(bag_mat, 0)
+            bag_mat = torch.squeeze(bag_mat)
+            return bag_mat
 
     def __getitem__(self, index: int) -> Tuple[torch.Tensor, Union[float, Tuple], torch.Tensor, str]:
         """

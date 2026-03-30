@@ -7,8 +7,8 @@ description: "Federated Concept Bottleneck Model for pan-cancer survival"
 random_seed: 42
 
 data:
-  db_path: "/home/maracuja/data/tcga/embeddings/uni"
-  database: "lmdb"
+  db_path: "/home/maracuja/data/tcga/embeddings/uni_npy"
+  database: "npy"
   target: "Survival"
   bag_n: 3000
   k: 0
